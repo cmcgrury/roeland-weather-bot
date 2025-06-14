@@ -36,6 +36,7 @@ client = discord.Client(intents=intents) # needs the intents passed into the cli
 async def on_ready(): # Must be async because discord bots need to run this way because they are constantly doing things like listening for messages, responding to events, etc. Async lets the program start a task, wait for it to finish, and do something elsew while it's waiting.
     print(f"Logged in as Roeland Weather Bot")
     check_weather_alerts.start()
+    await client.change_presence(activity=discord.Game(name="type !help for commands"))
 
 @client.event
 async def on_message(message):
@@ -201,14 +202,16 @@ async def on_message(message):
             print("Bot doesn't hav epermission to delete messages.")
 
     
-
+    if message.content.startswith("!help"):
+        await message.channel.send("Type `!weather cityname` or `!weather cityname, state abreviation` for current weather. Type `!alert cityname` or `!alert cityname, state abreviation` for current weather alerts.")
 
 seenAlerts = set()
 
 locationAlertTags = {
     "Beatrice, NE": [320361266407276546],
     "Lincoln, NE": [456265293099040768],
-    "Los Angeles, CA": [190277036600721408]
+    "Los Angeles, CA": [190277036600721408],
+    "Omaha, NE": [330029870673559553]
 }
 
 @tasks.loop(minutes=1)
@@ -243,7 +246,7 @@ async def check_weather_alerts():
             end = alert.get("expires", "")
             desc = alert.get("desc", "")
             instruction = alert.get("instruction", "")
-
+                
             alertMessage = (
                 f"**{headline}** ({severity})\n"
                 f"**Urgency:** {urgency}\n"
@@ -251,7 +254,8 @@ async def check_weather_alerts():
                 f"\n"
                 f"\n"
                 f"{desc}\n"
-                f"**Instructions:** {instruction}"
+                f"**Instructions:** {instruction}\n"
+                f"{tag}"
             )
 
             if headline not in seenAlerts:
@@ -259,7 +263,8 @@ async def check_weather_alerts():
 
                 for channel in allowedChannels:
                     if channel:
-                        await allowedChannels.send(alertMessage)
+                        await channel.send(alertMessage)
+
 
 
 
