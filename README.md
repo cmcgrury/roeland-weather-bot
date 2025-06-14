@@ -22,6 +22,7 @@ This is a project I started to teach myself how to create discord apps, as well 
 
 ## Features to add:
 - Daily forecast sent out every day
+- Add more comments
 - Potentially more
 
 ## Technologies used:
