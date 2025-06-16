@@ -173,6 +173,10 @@ async def on_message(message):
            await message.channel.send(f"No active weather alerts for **{locationAlert}**")
 
         for alert in alerts:
+            event = alert.get("event", "")
+            if "beach hazard" in event.lower():
+                continue
+
             headline = alert.get("headline", "No Headline")
             severity = alert.get("severity", "Unknown")
             urgency = alert.get("urgency", "Unknown")
@@ -235,6 +239,10 @@ async def check_weather_alerts():
             print("No alerts found")
 
         for alert in alerts:
+            event = alert.get("event", "")
+            if "beach hazard" in event.lower:
+                continue
+            
             f"{tag}\n"
             headline = alert.get("headline", "No Headline")
             severity = alert.get("severity", "Unknown")
