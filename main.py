@@ -189,14 +189,11 @@ async def on_message(message):
             instruction = alert.get("instruction", "")
 
             alertMessage = (
-                f"**{headline}** ({severity})\n"
-                f"**Urgency:** {urgency}\n"
-                f"**Certainty:** {certainty}\n"
-                f"\n"
-                f"\n"
-                f"{desc}\n"
-                f"**Instructions:** {instruction}"
+            f" **Weather Alert for {location}**\n"
+            f" **{start} to {end}**\n"
+            f" **{event}:** {desc.split('.')[0]}.\n" 
             )
+
 
             await message.channel.send(alertMessage)
 
@@ -240,7 +237,7 @@ async def check_weather_alerts():
 
         for alert in alerts:
             event = alert.get("event", "")
-            if "beach hazard" in event.lower:
+            if "beach hazard" in event.lower():
                 continue
             
             f"{tag}\n"
@@ -256,15 +253,12 @@ async def check_weather_alerts():
             instruction = alert.get("instruction", "")
                 
             alertMessage = (
-                f"**{headline}** ({severity})\n"
-                f"**Urgency:** {urgency}\n"
-                f"**Certainty:** {certainty}\n"
-                f"\n"
-                f"\n"
-                f"{desc}\n"
-                f"**Instructions:** {instruction}\n"
-                f"{tag}"
+            f" **Weather Alert for {location}**\n"
+            f" **{start} to {end}**\n"
+            f" **{event}:** {desc.split('.')[0]}.\n" 
+            f"{f'{tag}' if tag else ''}"
             )
+
 
             if headline not in seenAlerts:
                 seenAlerts.add(headline)
